@@ -27,14 +27,14 @@ always @(*) begin
        4'h3: o_segments = 8'b11110010;
        4'h4: o_segments = 8'b01100110;
        4'h5: o_segments = 8'b10110110;
-       4'h6: o_segments = 8'b11111010;
+       4'h6: o_segments = 8'b10111110;
        4'h7: o_segments = 8'b11100000;
        4'h8: o_segments = 8'b11111110;
        4'h9: o_segments = 8'b11110110;
        4'hA: o_segments = 8'b11101110;
-       4'hB: o_segments = 8'b10111110;
+       4'hB: o_segments = 8'b00111110;
        4'hC: o_segments = 8'b10011100;
-       4'hD: o_segments = 8'b00111110;
+       4'hD: o_segments = 8'b01111010;
        4'hE: o_segments = 8'b10011110;
        4'hF: o_segments = 8'b10001110;
    endcase
