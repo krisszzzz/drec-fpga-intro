@@ -1,12 +1,12 @@
 # -------------------------------------------------------------------------- #
 #
 # Copyright (C) 2024  Intel Corporation. All rights reserved.
-# Your use of Intel Corporation's design tools, logic functions 
-# and other software and tools, and any partner logic 
-# functions, and any output files from any of the foregoing 
-# (including device programming or simulation files), and any 
-# associated documentation or information are expressly subject 
-# to the terms and conditions of the Intel Program License 
+# Your use of Intel Corporation's design tools, logic functions
+# and other software and tools, and any partner logic
+# functions, and any output files from any of the foregoing
+# (including device programming or simulation files), and any
+# associated documentation or information are expressly subject
+# to the terms and conditions of the Intel Program License
 # Subscription Agreement, the Intel Quartus Prime License Agreement,
 # the Intel FPGA IP License Agreement, or other applicable license
 # agreement, including, without limitation, that your use is for
@@ -48,17 +48,18 @@ set_global_assignment -name SMART_RECOMPILE OFF
 set_global_assignment -name NUM_PARALLEL_PROCESSORS ALL
 set_global_assignment -name VERILOG_FILE src/fpga_top.v
 set_global_assignment -name VERILOG_FILE src/system_top.v
+set_global_assignment -name VERILOG_FILE src/decoder.v
 set_global_assignment -name VERILOG_FILE src/mux4.v
 set_global_assignment -name VERILOG_FILE src/dmem.v
-set_global_assignment -name VERILOG_FILE src/reg_file.v
+set_global_assignment -name VERILOG_FILE src/rf_2r1w.v
 set_global_assignment -name VERILOG_FILE src/mem_xbar.v
 set_global_assignment -name VERILOG_FILE src/imem.v
 set_global_assignment -name VERILOG_FILE src/cpu_top.v
 set_global_assignment -name VERILOG_FILE src/core.v
 set_global_assignment -name VERILOG_FILE src/control.v
-set_global_assignment -name VERILOG_FILE src/cmp.v
+set_global_assignment -name VERILOG_FILE src/cbu.v
 set_global_assignment -name VERILOG_FILE src/alu.v
-set_global_assignment -name VERILOG_FILE src/lsu.v
+# set_global_assignment -name VERILOG_FILE src/lsu.v
 set_global_assignment -name VERILOG_FILE src/hex_display.v
 set_global_assignment -name VERILOG_FILE src/mmio_xbar.v
 set_global_assignment -name VERILOG_FILE src/ctrl_74hc595.v
