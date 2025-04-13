@@ -11,13 +11,13 @@ module decoder(
     output reg        o_jump,
     output reg [1:0]  o_wb_sel,
     output reg        o_rf_we,
+    output reg [3:0]  o_mask,
     output reg        o_lsu_we
 );
 
 wire[6:0] opcode = i_instr[6:0];
 wire [2:0] funct3 = i_instr[14:12];
 wire [6:0] funct7 = i_instr[31:25];
-
 wire[11:0] iimm = i_instr[31:20];
 
 always @(*) begin
@@ -32,6 +32,7 @@ always @(*) begin
     o_cmp_op = `CBU_OP_INV;
     o_alusel1 = 2'b00;
     o_alusel2 = 2'b00;
+    o_mask = 4'b0000;
     //
 
     case (opcode)
@@ -118,9 +119,9 @@ always @(*) begin
             o_lsu_we = 1'b1;
 
             case (funct3)
-                `SB_FUNCT3: /* nothing */;
-                `SH_FUNCT3: /* nothing */;
-                `SW_FUNCT3: /* nothing */;
+                `SB_FUNCT3: o_mask = 1'b0001;
+                `SH_FUNCT3: o_mask = 1'b0011;
+                `SW_FUNCT3: o_mask = 1'b1111;
                 default: o_legal = 1'b0;
             endcase
         end
