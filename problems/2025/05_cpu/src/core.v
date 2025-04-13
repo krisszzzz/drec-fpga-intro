@@ -72,6 +72,7 @@ decoder decoder(.i_instr(i_instr_data),
                 .o_jump(jump),
                 .o_wb_sel(wb_sel),
                 .o_rf_we(rf_we),
+                .o_mask(o_mem_mask),
                 .o_lsu_we(lsu_we));
 
 rf_2r1w rf(.clk(clk),
@@ -118,7 +119,6 @@ assign o_instr_addr = pc;
 assign o_mem_addr = alu_res >> 2;
 assign o_mem_data = rf_src2;
 assign o_mem_we = lsu_we;
-assign o_mem_mask = 4'b1111;
 
 // either it's conditional branch and it's taken or it's uncoditional jump
 assign taken = ( branch_taken & branch ) | jump;
