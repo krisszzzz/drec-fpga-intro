@@ -1,5 +1,8 @@
 
-module uart_rx #(parameter FREQ=50_000_000, parameter RATE=2_000_000) (
+module uart_rx #(
+    parameter FREQ=50_000_000,
+    parameter RATE=2_000_000)
+(
   input  wire       clk,
   input  wire       rst_n,
   input  wire       i_rx,
