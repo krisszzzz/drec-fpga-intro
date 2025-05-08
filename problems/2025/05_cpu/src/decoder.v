@@ -103,13 +103,15 @@ always @(*) begin
             o_rf_we = 1'b1;
 
             case (funct3)
-                `LB_FUNCT3:  /* nothing */;
-                `LH_FUNCT3:  /* nothing */;
-                `LW_FUNCT3:  /* nothing */;
-                `LBU_FUNCT3: /* nothing */;
-                `LHU_FUNCT3: /* nothing */;
+                // FIXME: lh should sign-extend half word
+                `LB_FUNCT3:  o_mask = 4'b0001;
+                `LH_FUNCT3:  o_mask = 4'b0011;
+                `LW_FUNCT3:  o_mask = 4'b1111;
+                `LBU_FUNCT3: o_mask = 4'b0001;
+                `LHU_FUNCT3: o_mask = 4'b0011;
                 default: o_legal = 1'b0;
             endcase
+
         end
 
         `LSU_S_TYPE_OPCODE: begin
@@ -119,9 +121,9 @@ always @(*) begin
             o_lsu_we = 1'b1;
 
             case (funct3)
-                `SB_FUNCT3: o_mask = 1'b0001;
-                `SH_FUNCT3: o_mask = 1'b0011;
-                `SW_FUNCT3: o_mask = 1'b1111;
+                `SB_FUNCT3: o_mask = 4'b0001;
+                `SH_FUNCT3: o_mask = 4'b0011;
+                `SW_FUNCT3: o_mask = 4'b1111;
                 default: o_legal = 1'b0;
             endcase
         end
