@@ -23,16 +23,15 @@ endif
 
 RTL_LIST += 		\
 	src/cpu_top.v	\
+	src/decoder.v 	\
 	src/core.v		\
 	src/alu.v		\
-	src/cmp.v		\
-	src/reg_file.v	\
-	src/control.v	\
+	src/cbu.v		\
 	src/imem.v		\
 	src/dmem.v		\
 	src/mem_xbar.v	\
-	src/lsu.v		\
-	src/mux4.v		\
+	src/rf_2r1w.v	\
+	src/mux4.v
 
 ifeq ($(GUI), 1)
 VSIM_FLAGS :=
