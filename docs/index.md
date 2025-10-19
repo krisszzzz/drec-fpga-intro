@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Введение в проектирование на языке Verilog"
+title: "Список материалов"
 ---
 
-# Список лекций
+# Введение в проектирование на языке Verilog
 
 | #   | Слайды | Примеры | Руководства | Задания |
 |:---:| -------| ------- | ----------- | ------- |
@@ -18,5 +18,17 @@ title: "Введение в проектирование на языке Verilog
 | 6   | [Статическая память в ASIC и FPGA](https://docs.google.com/presentation/d/1DNowWy1SIPpJVkfS6wp8t7eBN-dr_eeC-qLX874_528) | [06_rom_uart](https://github.com/viktor-prutyanov/drec-fpga-intro/tree/master/examples/2025/06_rom_uart) | [SignalTap](./2025/06_signaltap.pdf) | [06_cpu](https://github.com/viktor-prutyanov/drec-fpga-intro/tree/master/problems/2025/06_cpu) |
 | 7a  | [STA](https://docs.google.com/presentation/d/1nQJHFMpifjf3aeh6Gmv8Kv0xSePEFb2WC7qlDLivjYU) | - | - | - |
 | 7b  | [Конвейерные вычисления](https://docs.google.com/presentation/d/10LPWZqqwGkNW45AFo-a64QdzvaN9OXWRo5L_dI8OWbE) | - | - | [07_fp16pipe](https://github.com/viktor-prutyanov/drec-fpga-intro/tree/master/problems/2025/07_fp16pipe) |
-| 8   | [RISC-V: 2-стадийная реализация](https://docs.google.com/presentation/d/1viiUbddl-3-mMLHUyqRT4Qwg-TDqU6svTKQP5wMri3Y) | - | - | 08_cpu |
-| 9   | | - | - | 09_cpu |
+| 8   | [RISC-V: 2-стадийная реализация](https://docs.google.com/presentation/d/1viiUbddl-3-mMLHUyqRT4Qwg-TDqU6svTKQP5wMri3Y) | - | - | [08_cpu](https://github.com/viktor-prutyanov/drec-fpga-intro/tree/master/problems/2025/08_cpu) |
+| 9   | [RISC-V: 3-стадийная реализация](https://docs.google.com/presentation/d/1QbmjNIb4kOxNY0MI4AXhF-Dj0UDitCWxHmHr5LqA0AE) | - | - | [09_cpu](https://github.com/viktor-prutyanov/drec-fpga-intro/tree/master/problems/2025/09_cpu) |
+
+# Проектирование цифровых вычислительных систем
+
+| #   | Слайды | Примеры | Руководства | Задания |
+|:---:| ------ | ------- | ----------- | ------- |
+| 1   | [Вводная лекция](https://docs.google.com/presentation/d/1mP-TNxQqpTpLkNQvJT76EnDv9aG5tzx0p_pcESyRpIo) | - | - | - |
+| 2a  | [SystemVerilog (ч.1)](https://docs.google.com/presentation/d/1WW6jrEPX8b1EH6NTLpnnro9-EQV8kLnHr6WuiDTPK9A) | [02_dpi](https://github.com/viktor-prutyanov/drec-fpga-intro/tree/master/examples/2026/02_dpi) | - | - |
+| 2b  | [Систолический массив](https://docs.google.com/presentation/d/18jo_C5YGQSz22qVKPTkTkqtv1m0k9GBK6ZInayUCPNo) | - | - | [02_syst_arr](https://github.com/viktor-prutyanov/drec-fpga-intro/tree/master/problems/2026/02_syst_array) |
+| 3   | [Управление потоком данных](https://docs.google.com/presentation/d/15Mm1tPsrxTHChPXZI256K9UP2yKIfLz0ZGow44vn9MQ)  | - | - | [03_syst_arr](https://github.com/viktor-prutyanov/drec-fpga-intro/tree/master/problems/2026/03_syst_array) |
+| 4a  | [AXI-Stream](https://docs.google.com/presentation/d/1FWA7eFgjWJ0LLhHFPY6To2egkwNof4RVTtL-OWY-dRI) | [04_axis](https://github.com/viktor-prutyanov/drec-fpga-intro/tree/master/examples/2026/04_axis) | - | - |
+| 4b  | [cocotb](https://docs.google.com/presentation/d/1bUhaRZGGbT3vDm0D3MmhY8CBJvuMfv8-Ih1_YI4W-uk) | [04_cocotb](https://github.com/viktor-prutyanov/drec-fpga-intro/tree/master/examples/2026/04_cocotb) | - | [04_axis_fifo](https://github.com/viktor-prutyanov/drec-fpga-intro/tree/master/problems/2026/04_axis_fifo) <br> [04_syst_arr](https://github.com/viktor-prutyanov/drec-fpga-intro/tree/master/problems/2026/04_syst_array) |
+| 5   | [AXI](https://docs.google.com/presentation/d/1IyphW2MuHN_1T2kUopr00emm8FoAvXTS9XT6iSzvEdk) | [05_axi](https://github.com/viktor-prutyanov/drec-fpga-intro/tree/master/examples/2026/05_axi) | - | [05_syst_arr](https://github.com/viktor-prutyanov/drec-fpga-intro/tree/master/problems/2026/05_axi) |
