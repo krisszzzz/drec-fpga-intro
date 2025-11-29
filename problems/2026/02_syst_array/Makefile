@@ -1,13 +1,13 @@
-TOP_TB_NAME := sa_dummy_tb
+TOP_TB_NAME := sa_top_tb
 
-TB_LIST := src/sa_dummy_tb.sv
+TB_LIST := src/sa_top_tb.sv src/sa_top_tb.cc
 
 RTL_LIST :=  \
-	src/pe.sv \
 	src/sr.sv \
+	src/pe.sv \
 	src/sa_core.sv \
-	src/sa_top.sv \
 	src/delay_line.sv \
+	src/sa_top.sv
 
 VCD_FILE := dump.vcd
 
@@ -22,10 +22,10 @@ vsim: $(TB_LIST) $(RTL_LIST)
 	vsim work.$(TOP_TB_NAME) $(VSIM_FLAGS) $(VSIM_LIBS)
 
 verilator: $(TB_LIST) $(RTL_LIST)
-	verilator --binary -Wno-fatal $^
+	verilator --binary -Wno-fatal --trace $^
 	./obj_dir/V$(TOP_TB_NAME)
 
-lint: $(RTL_LIST) 
+lint: $(RTL_LIST)
 	verilator --lint-only $^
 
 clean:
