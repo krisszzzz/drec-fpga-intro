@@ -6,7 +6,6 @@ RTL_LIST :=  \
 	src/sr.sv \
 	src/pe.sv \
 	src/sa_core.sv \
-	src/delay_line.sv \
 	src/sa_top.sv
 
 VCD_FILE := dump.vcd
