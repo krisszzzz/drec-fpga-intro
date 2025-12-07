@@ -17,7 +17,23 @@ module sa_top #(parameter WIDTH = 16, parameter SIZE = 4)(
 
 logic [SIZE - 1:0][WIDTH - 1:0] i_a_rows_top2core;
 logic [SIZE - 1:0]              i_a_vld_top2core;
+logic [SIZE - 1:0]              i_we_top2core;
 logic [SIZE - 1:0]              i_c_vld_top2core;
+
+// firstly set up the the rightmost PE
+logic [SIZE - 1:0] i_we_per_pe = { 1'b1, { SIZE - 1{1'b0} } };
+
+// correctly set i_we_top2core according i_we
+always_ff @(posedge clk) begin
+    if (i_we) begin
+        // set up we for left PE
+        // cycle-right shift
+        i_we_per_pe <= {i_we_per_pe[0], i_we_per_pe[SIZE-1:1]};
+    end
+end
+
+logic [SIZE - 1:0] i_we_per_pe2sr;
+assign i_we_per_pe2sr = i_we == 1 ? i_we_per_pe : 0;
 
 generate
 for (genvar i = 0; i < SIZE; i++) begin : sr_gen_inputs
@@ -25,6 +41,7 @@ for (genvar i = 0; i < SIZE; i++) begin : sr_gen_inputs
         // no sr
         assign i_a_rows_top2core[i] = i_a_rows[i];
         assign i_a_vld_top2core[i]  = i_a_vld;
+        assign i_we_top2core[i]     = i_we_per_pe2sr[i];
         assign i_c_vld_top2core[i]  = i_c_vld;
    end else begin
         sr #(.WIDTH(WIDTH), .LENGTH(i)) sr_a_inst (
@@ -45,6 +62,14 @@ for (genvar i = 0; i < SIZE; i++) begin : sr_gen_inputs
             .o_vld   (i_c_vld_top2core[i]),
             .out_data() // ignored
         );
+
+        sr #(.WIDTH(1), .LENGTH(i)) sr_we_inst (
+            .clk     (clk),
+            .i_vld   (i_we_per_pe2sr[i]),
+            .in_data (), // ignored
+            .o_vld   (i_we_top2core[i]),
+            .out_data() // ignored
+        );
     end
 end
 endgenerate
@@ -55,7 +80,7 @@ logic [SIZE - 1:0][WIDTH - 1:0] o_c_rows_core2top;
 // generate sr to the output from the "bottom"-side of SA
 sa_core #(.WIDTH(WIDTH), .SIZE(SIZE)) sa_core_inst(
     .clk(clk),
-    .i_we(i_we),
+    .i_we(i_we_top2core),
     .i_a_vld(i_a_vld_top2core),
     .i_a_rows(i_a_rows_top2core),
     .i_c_vld(i_c_vld_top2core),

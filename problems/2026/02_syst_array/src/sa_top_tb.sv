@@ -3,9 +3,9 @@
 module sa_top_tb;
 
 localparam WIDTH = 16;
-localparam SIZE  = 3;
+localparam SIZE  = 2;
 
-logic clk = 1'b0;
+logic clk = 1'b1;
 logic c_vld_correct = 1'b1;
 logic i_we;
 logic i_a_vld;
@@ -62,17 +62,18 @@ initial begin
         end
     end
 
-    @(posedge clk);
+    repeat (2) @(posedge clk);
 
     // Load B matrix. NOTE: in reverse order across i index
     // with idle
     for (int i = SIZE - 1; i >= 0; i--) begin
-        if (i != SIZE / 2) begin
+        if (i == SIZE / 2) begin
             i_a_vld = 1;
             i_we = 1;
         end else begin
             i_a_vld = 0;
             i_we = 0;
+            i_a_rows = '0;
             @(posedge clk);
             i_a_vld = 1;
             i_we = 1;
