@@ -1,7 +1,7 @@
 module sa_core #(parameter WIDTH=16, parameter SIZE=4)(
     input logic clk,
 
-    input logic i_we,
+    input logic [SIZE - 1:0] i_we,
     input logic [SIZE - 1:0] i_a_vld,
 
     // pass 1 row of A or B
@@ -27,7 +27,7 @@ genvar i, j;
 for (j = 0; j < SIZE; j++) begin : top_input
     assign c[0][j] = 0;
     assign c_vld[0][j] = i_c_vld[j];
-    assign we[0][j]    = i_we;    // row-broadcast we
+    assign we[0][j]    = i_we[j];
 end
 
 // Bottom boundary outputs (i = size-1, j = 0..size-1)
