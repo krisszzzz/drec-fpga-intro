@@ -19,27 +19,22 @@ module sa_csr #(
    output logic                  [1:0] s_axil_bresp,
    output logic                        s_axil_bvalid,
    input  logic                        s_axil_bready,
-   // AR (unused)
-   input  logic [ADDR_WIDTH-1:0]  s_axil_araddr,
-   input  logic            [2:0]  s_axil_arprot,
-   input  logic                   s_axil_arvalid,
-   output logic                   s_axil_arready,
-   // R (unused)
-   output logic [DATA_WIDTH-1:0]  s_axil_rdata,
-   output logic            [1:0]  s_axil_rresp,
-   output logic                   s_axil_rvalid,
-   input  logic                   s_axil_rready,
+
    // Register Outputs
-   output logic     [ADDR_WIDTH - 1:0] o_addr_A,
-   output logic     [ADDR_WIDTH - 1:0] o_addr_B,
+   output logic                        o_start_sgnl,
+   output logic                        o_is_b,
+   output logic     [ADDR_WIDTH - 1:0] o_addr_AB,
    output logic     [ADDR_WIDTH - 1:0] o_addr_C
 );
 
-localparam ADDR_A_MAPPED_ADDR = 32'h0000_0000;
-localparam ADDR_B_MAPPED_ADDR = 32'h0000_0004;
-localparam ADDR_C_MAPPED_ADDR = 32'h0000_0008;
+localparam START_SGNL_MAPPED_ADDR = 32'h0000_0000;
+localparam IS_B_MAPPED_ADDR       = 32'h0000_0004;
+localparam ADDR_AB_MAPPED_ADDR    = 32'h0000_0008;
+localparam ADDR_C_MAPPED_ADDR     = 32'h0000_000C;
 
-logic [ADDR_WIDTH - 1:0] addr_A, addr_B, addr_C;
+logic start_sgnl;
+logic is_b;
+logic [ADDR_WIDTH - 1:0] addr_AB, addr_C;
 logic reg_wr_okay; // response: OK or SLVERR
 
 // signals from axil2reg_wr
@@ -78,14 +73,15 @@ axil2reg_wr #(
 
 always_ff @(posedge clk or negedge rst_n) begin
    if (!rst_n) begin
-      addr_A <= '0;
-      addr_B <= '0;
+      is_b <= 0;
+      addr_AB <= '0;
       addr_C <= '0;
    end else if (wr_en) begin
       case (wr_addr)
-         ADDR_A_MAPPED_ADDR: addr_A <= wr_data;
-         ADDR_B_MAPPED_ADDR: addr_B <= wr_data;
-         ADDR_C_MAPPED_ADDR: addr_C <= wr_data;
+         START_SGNL_MAPPED_ADDR: start_sgnl <= wr_data[0];
+         IS_B_MAPPED_ADDR:       is_b       <= wr_data[0];
+         ADDR_AB_MAPPED_ADDR:    addr_AB    <= wr_data;
+         ADDR_C_MAPPED_ADDR:     addr_C     <= wr_data;
          default: ;
       endcase
    end
@@ -93,15 +89,17 @@ end
 
 always_comb begin
    case (wr_addr)
-      ADDR_A_MAPPED_ADDR,
-      ADDR_B_MAPPED_ADDR,
+      START_SGNL_MAPPED_ADDR,
+      IS_B_MAPPED_ADDR,
+      ADDR_AB_MAPPED_ADDR,
       ADDR_C_MAPPED_ADDR: reg_wr_okay = 1'b1;
       default:            reg_wr_okay = 1'b0;
    endcase
 end
 
-assign o_addr_A = addr_A;
-assign o_addr_B = addr_B;
-assign o_addr_C = addr_C;
+assign o_start_sgnl = start_sgnl;
+assign o_is_b    = is_b;
+assign o_addr_AB = addr_AB;
+assign o_addr_C  = addr_C;
 
 endmodule
