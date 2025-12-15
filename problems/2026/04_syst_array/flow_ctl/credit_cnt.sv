@@ -4,12 +4,13 @@ module credit_cnt #(
     parameter MAX_CREDITS = 4
 )(
     input  logic clk,
-
     input  logic rst_n,
-    input  logic i_fifo_inc_sgnl,
-    input  logic i_vld,
-    output logic o_vld,
 
+    input  logic i_fifo_inc_sgnl,
+    input  logic is_b,
+    input  logic i_vld,
+
+    output logic o_vld,
     output logic o_ready
 );
 
@@ -27,7 +28,8 @@ assign o_vld = i_vld && can_send;
 logic decr;
 logic incr;
 
-assign decr = i_vld && can_send;
+// do NOT decrement if is_b
+assign decr = is_b ? 1'b0 : i_vld && can_send;
 assign incr = i_fifo_inc_sgnl;
 
 always_ff @(posedge clk or negedge rst_n) begin

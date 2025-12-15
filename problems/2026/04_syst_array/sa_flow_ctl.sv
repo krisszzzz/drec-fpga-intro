@@ -16,7 +16,7 @@ module sa_flow_ctl #(parameter WIDTH = 16,
 );
 
 logic sa_i_we;
-assign sa_i_we = is_b ? 1'b1 : 1'b0;
+assign sa_i_we = is_b & sa_i_a_vld ? 1'b1 : 1'b0;
 // from credit_cnt
 logic sa_i_a_vld;
 
@@ -62,6 +62,7 @@ credit_cnt #(.WIDTH($clog2(FIFO_STAGES + 1)), .MAX_CREDITS(FIFO_STAGES)) credit_
     .clk(clk),
     .rst_n(rst_n),
     .i_fifo_inc_sgnl(fifo_inc_sgnl),
+    .is_b(is_b),
     .i_vld(i_vld),
     .o_vld(sa_i_a_vld),
     .o_ready(o_ready)
