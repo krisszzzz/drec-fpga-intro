@@ -1,12 +1,11 @@
 import cocotb
-from cocotb.triggers import RisingEdge, Timer, ClockCycles, First
+from cocotb.triggers import RisingEdge, ClockCycles
 from cocotb.clock import Clock
-from cocotb.queue import Queue
 import numpy as np
-import random
 import logging
+import struct
 
-from cocotbext.axi import AxiBus, AxiSlave, AxiRam
+from cocotbext.axi import AxiBus, AxiRam
 
 # Test parameters
 WIDTH = 16
@@ -83,12 +82,28 @@ class SystolicArrayTestbench:
         byte_data = bytearray()
 
         # Pack matrix row-major order
-        for i in range(rows):
-            for j in range(cols):
-                row = rows - i - 1 if is_b else i
-                byte_data.extend(matrix[row][j].tobytes())
-
+        for i in range(cols):
+            col = cols - i - 1 if is_b else i
+            for j in range(rows):
+                byte_data.extend(matrix[col][j].tobytes())
         return bytes(byte_data)
+
+
+    # def axi_data_to_matrix(self, byte_data, rows, cols):
+    #     """Convert AXI data back to matrix"""
+    #     matrix = np.zeros((rows, cols), dtype=np.uint16)
+    #     self.log.info(f'axi_data_to_matrix = {byte_data}')
+
+    #     # total number of 16-bit integers
+    #     total_ints = len(byte_data) // 2
+
+    #     cols = total_ints // rows
+    #     # little endian
+    #     fmt = '<' + 'H' * total_ints
+    #     values = struct.unpack(fmt, byte_data)
+    #     matrix = [list(values[i*cols : (i+1)*cols]) for i in range(rows)]
+
+    #     return matrix
 
     def axi_data_to_matrix(self, byte_data, rows, cols):
         """Convert AXI data back to matrix"""
@@ -151,7 +166,7 @@ class SystolicArrayTestbench:
         await self.write_matrix_to_memory(
             self.dut.base_addr_ab.value.integer,
             self.test_data_b,
-            self.dut.is_b.value
+            True
         )
 
         # Start loading B
@@ -175,7 +190,7 @@ class SystolicArrayTestbench:
         await self.write_matrix_to_memory(
             self.dut.base_addr_ab.value.integer,
             self.test_data_a,
-            self.dut.is_b.value
+            False
         )
 
         # Start loading A and saving C
@@ -200,16 +215,14 @@ class SystolicArrayTestbench:
 
         if self.test_data_a is not None and self.test_data_b is not None:
             # Simple test: expected C = A * B
-            a_uint32 = self.test_data_a.astype(np.uint32)
-            b_uint32 = self.test_data_b.astype(np.uint32)
-            self.matrix_c_expected = self.matrix_c_actual;
-
+            self.matrix_c_expected = np.zeros((SIZE, SIZE), dtype=np.int16)
             for i in range(SIZE):
                 for j in range(SIZE):
                     C = 0;
                     for k in range(SIZE):
-                        C += self.test_data_a[i][k] * self.test_data_b[k][j]
-                    self.matrix_c_actual[i][j] = C
+                        # transposed B
+                        C += self.test_data_a[i][k] * self.test_data_b[j][k]
+                    self.matrix_c_expected[i][j] = C
 
             # Compare
             if self.matrix_c_actual is not None:
@@ -227,7 +240,7 @@ class SystolicArrayTestbench:
                 if mismatch:
                     self.log.error("Matrix mismatch!")
                 else:
-                    self.log.info("✓ Matrix C matches expected (A * B)")
+                    self.log.info("Matrix C matches expected (A * B)")
             else:
                 self.log.warning("No actual C matrix to compare")
 
