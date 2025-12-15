@@ -2,12 +2,23 @@ SIM ?= verilator
 
 TOPLEVEL_LANG = verilog
 
-VERILOG_SOURCES += axil2reg_wr.sv \
-				   sa_csr.sv
+VERILOG_SOURCES += \
+	axi_sa_top.sv \
+	sa_flow_ctl.sv \
+	csr/axil2reg_wr.sv \
+	csr/sa_csr.sv \
+	addr_gen/addr_gen.sv \
+	sa/sa_top.sv \
+	sa/sa_core.sv \
+	sa/pe.sv \
+	sa/sr.sv \
+	flow_ctl/credit_cnt.sv \
+	flow_ctl/fifo.sv \
+	flow_ctl/rf_1r1w.sv
 
 
-TOPLEVEL = sa_csr
-MODULE   = sa_csr_tb
+TOPLEVEL = axi_sa_top
+MODULE   = axi_sa_top_tb
 
 ifeq ($(SIM), verilator)
     EXTRA_ARGS += --trace --trace-fst --trace-structs
