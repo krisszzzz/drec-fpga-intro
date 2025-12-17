@@ -44,18 +44,18 @@ assign reg_wr_strb = s_axil_wstrb;
 assign reg_wr_en = idle && s_axil_awvalid && s_axil_wvalid;
 
 always_ff @(posedge clk or negedge rst_n) begin
-  if (!rst_n) begin
-    idle <= 1'b1;
-    en_d <= 1'b0;
-  end else begin
-    idle <= idle ? !(s_axil_awvalid && s_axil_wvalid) : s_axil_bready;
-    en_d <= reg_wr_en;
-  end
+    if (!rst_n) begin
+        idle <= 1'b1;
+        en_d <= 1'b0;
+    end else begin
+        idle <= idle ? !(s_axil_awvalid && s_axil_wvalid) : s_axil_bready;
+        en_d <= reg_wr_en;
+    end
 end
 
 always_ff @(posedge clk)
-  if (en_d) begin
-    okay <= reg_wr_okay;
-  end
+    if (en_d) begin
+        okay <= reg_wr_okay;
+    end
 
 endmodule
